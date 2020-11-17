@@ -61,8 +61,7 @@ function hash_package(targets: IndexedTargets, components: IndexComponents): (na
 }
 
 const hashing = hash_package(targets, indexedComponent);
-const new_nodes = resolved_graph.nodes.map(n => hashing(n));
-const new_links = resolved_graph.links.map(l => ({source: hashing(l.source), target: hashing(l.target)}));
-const result = { nodes: new_nodes, links: new_links };
+
+const result = resolved_graph.nodes.map(n => ({ node: n, hash: hashing(n) }));
 console.log(JSON.stringify(result, undefined, 2))
 
