@@ -52,7 +52,7 @@ function hash_package(targets: IndexedTargets, components: IndexComponents): (na
     hash.update(externalDepsHash);
 
 
-    const result = name + "**" + hash.digest("hex");
+    const result = name.split("+")[0] + "**" + hash.digest("hex").slice(0, 10);
     memo.set(name, result);
 
     return result;
