@@ -9,8 +9,8 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "prepack": "yarn prettify && yarn build",
     "build": "tsc",
+    "prepack": "yarn prettify && yarn build",
     "prettify": "prettier --write ./src tsconfig.json && prettier-package-json --write ./package.json"
   },
   "devDependencies": {
