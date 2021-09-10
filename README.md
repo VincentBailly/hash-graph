@@ -1,7 +1,7 @@
 # hash-graph-nodes
 
 `hash-graph-nodes` is a library that assignes a uniq hash to all the nodes in the graph. The hash is deterministic and stable, the same input will always produce the same output.
-The hash is reflects the content of a node and the hash of its children. This means that if a node changes content, all ancestors will get a new hash. The is useful for cache invalidation.
+The hash reflects the content of a node and the hash of its children. This means that if a node changes content, all ancestors will get a new hash. This is useful for cache invalidation.
 
 The special feature of hash-graph is that it can hash graphs that have cycles. This feature is inspired from [this article](https://www.fugue.co/blog/2016-05-18-cryptographic-hashes-and-dependency-cycles.html).
 

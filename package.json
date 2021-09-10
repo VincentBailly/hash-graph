@@ -1,11 +1,11 @@
 {
   "name": "hash-graph-nodes",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "license": "MIT",
   "author": "Vincent Bailly <vincent.bailly@microsoft.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VincentBailly/midgard-yarn-strict.git"
+    "url": "git+https://github.com/VincentBailly/hash-graph.git"
   },
   "main": "lib/index.js",
   "scripts": {
