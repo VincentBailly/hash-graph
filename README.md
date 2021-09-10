@@ -8,7 +8,7 @@ The special feature of hash-graph is that it can hash graphs that have cycles. T
 ## Usage
 
 ```javascript
-const { getNodeHashes } = require("hash-graph");
+const { getNodeHashes } = require("hash-graph-nodes");
 
 const graph = {
   nodes: [
