@@ -9,6 +9,15 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
   const idToContent = new Map<number, string>();
   graph.nodes.forEach((node) => idToContent.set(node.id, node.contentHash));
 
+  type IndexedTargets = Map<number, number[]>;
+  const targets: IndexedTargets = new Map<number, number[]>();
+  graph.links.forEach((l) => {
+    if (!targets.has(l.source)) {
+      targets.set(l.source, []);
+    }
+    targets.get(l.source)!.push(l.target);
+  });
+
   type IndexComponents = Map<number, number[]>;
 
   // the keys are the package keys and the values are a list of packages in the same group.
@@ -16,19 +25,6 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
     components
       .map((o) => o.map<[number, number[]]>((oo) => [oo, o]))
       .reduce((p, n) => [...p, ...n], [])
-  );
-
-  function getLinksFrom(graph: Graph, id: number): number[] {
-    return graph.links.filter((l) => l.source === id).map((l) => l.target);
-  }
-
-  function getMapEntryFor(graph: Graph, id: number): [number, number[]] {
-    return [id, getLinksFrom(graph, id)];
-  }
-
-  type IndexedTargets = Map<number, number[]>;
-  const targets: IndexedTargets = new Map(
-    graph.nodes.map((n) => getMapEntryFor(graph, n.id))
   );
 
   function getComponentHash(
@@ -44,8 +40,7 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
     hash.update(contentOfComponent);
     const externalHash = component
       .map((n) =>
-        targets
-          .get(n)!
+        (targets.get(n) || [])
           .filter((t) => !component.includes(t))
           .sort()
           .map((n) => hash_package(targets, components)(n))
@@ -57,8 +52,7 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
     const innerGraph = component
       .sort()
       .map((c) =>
-        targets
-          .get(c)!
+        (targets.get(c) || [])
           .filter((v) => component.includes(v))
           .sort()
           .map((d) => `${c}=>${d}`)
@@ -86,8 +80,7 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
       const component = components.get(id)!;
       const componentHash = getComponentHash(targets, component, components);
       hash.update(componentHash);
-      const externalDepsHash = targets
-        .get(id)!
+      const externalDepsHash = (targets.get(id) || [])
         .filter((t) => !component.includes(t))
         .sort()
         .map((n) => hashing(n))
