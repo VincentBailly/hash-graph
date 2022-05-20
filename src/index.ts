@@ -44,8 +44,10 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
           .filter((t) => !component.includes(t))
           .sort()
           .map((n) => hash_package(targets, components)(n))
+          .sort()
           .join("+")
       )
+      .sort()
       .join("**");
     hash.update(externalHash);
 
@@ -54,10 +56,11 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
       .map((c) =>
         (targets.get(c) || [])
           .filter((v) => component.includes(v))
+          .map((d) => `${idToContent.get(c)}=>${idToContent.get(d)}`)
           .sort()
-          .map((d) => `${c}=>${d}`)
           .join(";")
       )
+      .sort()
       .join(";;");
     hash.update(innerGraph);
 
@@ -84,6 +87,7 @@ export function getNodeHashes(graph: Graph): Map<number, string> {
         .filter((t) => !component.includes(t))
         .sort()
         .map((n) => hashing(n))
+        .sort()
         .join("+");
       hash.update(externalDepsHash);
 
